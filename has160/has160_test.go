@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/RyuaNerin/go-krypto/internal"
+	"github.com/cuhsat/go-krypto/internal"
 
 	. "github.com/RyuaNerin/testingutil"
 )
@@ -14,7 +14,7 @@ func Test_HAS160_ShortWrite(t *testing.T) { HTSW(t, New(), false) }
 func TestHAS160(t *testing.T) {
 	var sum []byte
 	for tcIdx, tc := range testCases {
-		expect := internal.HB(tc.MD)
+		expect := internal.HexToBytes(tc.MD)
 
 		h := New()
 

@@ -5,7 +5,7 @@ import (
 	"encoding/binary"
 	"errors"
 
-	"github.com/RyuaNerin/go-krypto/internal"
+	"github.com/cuhsat/go-krypto/internal"
 )
 
 const (

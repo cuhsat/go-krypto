@@ -16,23 +16,25 @@ type h interface {
 
 func TestMarshal(t *testing.T) {
 	src := make([]byte, 4096)
-	rand.Read(src)
+	_, _ = rand.Read(src)
 
 	part1 := src[:2048]
 	part2 := src[2048:]
 
 	h := New().(h)
-	h.Write(part1)
+	_, _ = h.Write(part1)
 	data, _ := h.MarshalBinary()
 
-	h.Write(part2)
+	_, _ = h.Write(part2)
 	sum1 := h.Sum(nil)
 
 	if err := h.UnmarshalBinary(data); err != nil {
 		t.Errorf("UnmarshalBinary failed: %v", err)
 		return
 	}
-	h.Write(part2)
+
+	_, _ = h.Write(part2)
+
 	if !bytes.Equal(sum1, h.Sum(nil)) {
 		t.Errorf("hash mismatch")
 	}
@@ -41,8 +43,10 @@ func TestMarshal(t *testing.T) {
 		t.Errorf("UnmarshalBinary failed: %v", err)
 		return
 	}
-	h.Write(part2)
-	h.Write([]byte{0})
+
+	_, _ = h.Write(part2)
+	_, _ = h.Write([]byte{0})
+
 	if bytes.Equal(sum1, h.Sum(nil)) {
 		t.Errorf("unexpected hash match")
 	}

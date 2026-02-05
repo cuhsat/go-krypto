@@ -8,19 +8,14 @@ import (
 	"hash"
 	"math/bits"
 
-	"github.com/RyuaNerin/go-krypto"
-	"github.com/RyuaNerin/go-krypto/internal/memory"
+	"github.com/cuhsat/go-krypto/internal"
 )
 
-func init() {
-	krypto.RegisterHash(krypto.HAS160, New)
-}
-
 const (
-	// The size of a HAS-160 checksum in bytes.
+	// Size of a HAS-160 checksum in bytes.
 	Size = 20
 
-	// The blocksize of LSH-256 and HAS-160 in bytes.
+	// BlockSize of LSH-256 and HAS-160 in bytes.
 	BlockSize = 64
 )
 
@@ -35,10 +30,10 @@ func New() hash.Hash {
 func Sum(data []byte) (sum [Size]byte) {
 	var ctx has160Context
 	ctx.Reset()
-	ctx.Write(data)
+	_, _ = ctx.Write(data)
 
-	hash := ctx.Sum(nil)
-	copy(sum[:], hash)
+	hs := ctx.Sum(nil)
+	copy(sum[:], hs)
 	return
 }
 
@@ -96,8 +91,8 @@ func (ctx *has160Context) Write(p []byte) (n int, err error) {
 
 func (ctx *has160Context) Sum(p []byte) []byte {
 	ctx0 := *ctx
-	hash := ctx0.checkSum()
-	return append(p, hash[:]...)
+	hs := ctx0.checkSum()
+	return append(p, hs[:]...)
 }
 
 func (ctx *has160Context) checkSum() (hash [20]byte) {
@@ -105,12 +100,12 @@ func (ctx *has160Context) checkSum() (hash [20]byte) {
 	ctx.boff++
 
 	if BlockSize-8 < ctx.boff {
-		memory.Memclr(ctx.block[ctx.boff:])
+		internal.Memclr(ctx.block[ctx.boff:])
 		ctx.stepBlock(ctx.block[:])
 		ctx.boff = 0
 	}
 
-	memory.Memclr(ctx.block[ctx.boff:])
+	internal.Memclr(ctx.block[ctx.boff:])
 	binary.LittleEndian.PutUint64(ctx.block[BlockSize-8:], uint64(ctx.length)*8)
 	ctx.stepBlock(ctx.block[:])
 

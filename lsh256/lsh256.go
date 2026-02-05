@@ -6,12 +6,12 @@ import (
 )
 
 const (
-	// The size of a LSH-256 checksum in bytes.
+	// Size of a LSH-256 checksum in bytes.
 	Size = 32
-	// The size of a LSH-224 checksum in bytes.
+	// Size224 of a LSH-224 checksum in bytes.
 	Size224 = 28
 
-	// The blocksize of LSH-256 and LSH-224 in bytes.
+	// BlockSize of LSH-256 and LSH-224 in bytes.
 	BlockSize = 128
 )
 
